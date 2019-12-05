@@ -1,0 +1,72 @@
+{% extends 'groups/group_base.html' %}
+
+<!-- What appears before the group content is in this template tag -->
+{% block pregroup %}
+
+  <!-- A context dictionary is passed with the attributes of the
+       current Group object when the DetailView is called.
+        > It is always the lowercased version of the class:
+          > Group -> group
+  -->
+
+  <h2> {{ group.name }} </h2>
+
+  <h5> Member count: {{ group.members.count }} </h5>
+
+  <div class="content">
+
+    <!-- If the logged in user is a member of the current group -->
+    {% if user in group.members.all %}
+
+      <!-- Give them the option to leave the group -->
+      <a href="{% url 'groups:leave' slug=group.slug %}"
+         class='btn btn-md btn-fill btn-warning'>
+         <span class='glyphicon glyphicon-remove-circle'></span>
+         Leave
+      </a>
+
+    <!-- If they are not, give them to option to join -->
+    {% else %}
+
+    <a href="{% url 'groups:join' slug=group.slug %}"
+       class='btn btn-md btn-fill btn-warning'>
+       <span class='glyphicon glyphicon-ok-circle'></span>
+       Join
+    </a>
+
+    {% endif %}
+
+  </div>
+
+{% endblock %}
+
+
+<!-- The group content is in a separate template tag -->
+{% block group_content %}
+
+  <div class="col-md-8">
+
+    <!-- If the group has no posts -->
+    {% if group.posts.count == 0 %}
+
+      <h5> No posts yet. </h5>
+
+    {% else %}
+
+      <!-- For each group's posts (FK in Group) -->
+      {% for post in group.posts.all %}
+
+        <!-- 'include' is like 'extends' but it inject an html
+             page in the middle of one that is already extending,
+             like in this case. We bring up _post.html
+                > The underscore signifies that html is to be
+                  injected into another one that 'extends' -->
+        {% include 'posts/_post.html' %}
+
+      {% endfor %}
+
+    {% endif %}
+
+  </div>
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'posts/post_base.html' %}
+
+{% block pre_post_content %}
+
+  <div class="col-md-4">
+
+    <!-- Show the registered user's groups -->
+
+    {% if request.user.is_authenticated %}
+
+      <h2> User
+
+        <a href="{% url 'posts:for_user' username=request.user.username %}">
+          @{{ request.user.username }}
+        </a>
+
+      </h2>
+
+      <div class="card card-with-shadow">
+
+        <div class="content">
+
+          <h5 class='title'> Your groups </h5>
+
+          <ul class='list-unstyled'>
+
+            <!-- user_groups comes from class GroupMember in group's
+                 models.py - We call it from models.ForeignKey(Group,
+                 related_name='user_groups') < hence the last part.
+                 The register = template.Library() allows us to use
+                 related names to associate Key fields.
+                   > get_ connects us to those group's Key fields
+                   > "For each group the user is a member of"
+            -->
+            {# {% get_user_groups as user_groups %}#}
+            {% for member_group in get_user_groups %}
+
+              <li class='group li-with-bullet'>
+
+                <a href="{% url 'groups:single' slug=member_group.group.slug %}">
+                  {{ member_group.group.name }}
+                </a>
+
+              </li>
+
+            {% endfor %}
+
+          </ul>
+        </div>
+      </div>
+
+    {% endif %}
+
+    <!-- Show all groups regardless of the user being auth or not -->
+
+    <div class="card card-with-shadow">
+
+      <div class="content">
+
+        <h5 class='title'> All groups </h5>
+
+        <ul class='list-unstyled'>
+
+          {# {% get_other_groups as other_groups %}#}
+          {% for other_group in get_other_groups %}
+
+            <li class='group li-with-bullet'>
+
+              <a href="{% url 'groups:single' slug=other_group.slug %}"></a>
+
+            </li>
+
+          {% endfor %}
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+
+{% block post_content %}
+
+  <div class="col-md-8">
+
+    {% for post in post_list %}
+
+      {% include 'posts/_post.html' %}
+
+    {% endfor %}
+
+  </div>
+
+{% endblock %}

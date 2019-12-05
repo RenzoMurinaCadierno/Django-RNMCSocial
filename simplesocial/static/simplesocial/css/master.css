@@ -1,0 +1,58 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background: #0b182e;
+  color: white;
+  /* overflow: hidden; */
+  margin: 0;
+}
+
+#note {
+  position: absolute;
+  color: rgba(249,241,204,1);
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  margin: auto;
+  text-align: center;
+  user-select: none;
+  font-family: Arial;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.navbar-toggle{
+    background: none;
+    border: 1px solid #337ab7;
+    color: #fff;
+}
+
+.icon-bar {
+   background: white;
+}
+
+.balooFont {
+  font-family: 'Baloo', cursive;
+  font-size: 1.1em;
+  margin-bottom: 10px;
+}
+
+.brand {
+  font-size: 1.3em;
+}
+
+.brand:hover {
+  background-color: white;
+}
+
+.github {
+  color: yellow;
+  text-shadow: 0px 0px 10px white;
+}
+
+.github:hover {
+  color: yellow;
+}

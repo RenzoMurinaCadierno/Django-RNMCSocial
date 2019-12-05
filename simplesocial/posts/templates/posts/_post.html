@@ -1,0 +1,69 @@
+<!-- _post.html is injected into templates that are already
+     extending, so we do not need to extend anything here -->
+
+<div class="post media">
+
+  <!-- Get the message content. Safe if the content includes
+       ascii or alikes -->
+  <h3> {{ post.message_html | safe }} </h3>
+
+  <div class="media-body">
+
+    <!-- Get whoever wrote the message -->
+    <!-- <em> Posted by </em> <strong> {{ post.user.username }} </strong> -->
+
+    <h5 class='media heading'>
+
+      <span class='username'>
+
+        <em> Posted by </em>
+
+        <!-- Give the username a link so that you can check their posts -->
+        <a href="{% url 'posts:for_user' username=post.user.username %}">
+          @{{ post.user.username }}
+        </a>
+
+      </span>
+
+      <!-- A tag to post a time object to show the creation date -->
+      <time class='time'>
+
+        <em> - {{ post.created_at }} </em>
+
+        <!-- <a href="{% url 'posts:single' username=post.user.username pk=post.pk %}">
+          {{ post.created_at }}
+        </a> -->
+
+      </time>
+    </h5>
+
+    <div class="media-footer">
+
+      <!-- Not only of the user is authenticated, but also if the logged
+           in user is the same as the one who posted it -->
+
+      {% if user.is_authenticated and post.user == user %}
+
+        {% if not hide_delete %}
+
+          <!-- Give them the chance to remove the post -->
+          <a href="{% url 'posts:delete' pk=post.pk %}"
+             name='delete' class='btn btn-simple'">
+
+             <!-- aria = accessible reach internet application
+                   > Tells screen readers to hide the element and
+                     do not read it out loud -->
+             <span class='glyphicon glyphicon-remove text-danger'
+                   aria-hidden='true'></span>
+
+             <span class='text-danger icon-label'> Delete </span>
+
+          </a>
+          
+        {% endif %}
+
+      {% endif %}
+
+    </div>
+  </div>
+</div>
